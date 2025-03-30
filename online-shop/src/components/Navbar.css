@@ -1,0 +1,169 @@
+/* استایل کلی نوار导航 */
+.navbar {
+    font-family: 'IranYekan', Arial, sans-serif;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    background-color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  /* نوار اطلاع رسانی بالایی */
+  .top-bar {
+    background-color: #3b82f6;
+    color: white;
+    padding: 8px 0;
+    text-align: center;
+    font-size: 0.8rem;
+  }
+  
+  /* بخش اصلی نوار */
+  .main-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 5%;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  
+  /* استایل لوگو */
+  .logo img {
+    height: 40px;
+    width: auto;
+  }
+  
+  /* جعبه جستجو */
+  .search-box {
+    flex: 1;
+    max-width: 600px;
+    margin: 0 30px;
+  }
+  
+  .search-container {
+    display: flex;
+    border: 2px solid #3b82f6;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .search-container input {
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    outline: none;
+    font-size: 0.9rem;
+  }
+  
+  .search-button {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    padding: 0 15px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* منوی کاربر */
+  .user-menu {
+    display: flex;
+    gap: 25px;
+  }
+  
+  .menu-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #4b5563;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: color 0.2s;
+  }
+  
+  .menu-item:hover {
+    color: #3b82f6;
+  }
+  
+  .menu-item.cart {
+    position: relative;
+  }
+  
+  .badge {
+    position: absolute;
+    top: -5px;
+    right: 8px;
+    background-color: #ef4444;
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* منوی دسته‌بندی‌ها */
+  .category-nav {
+    background-color: #f3f4f6;
+    border-top: 1px solid #e5e7eb;
+    padding: 8px 5%;
+  }
+  
+  .categories-btn {
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 12px;
+    margin-right: 20px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+  }
+  
+  .nav-links {
+    display: flex;
+    gap: 25px;
+  }
+  
+  .nav-links a {
+    color: #4b5563;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.2s;
+  }
+  
+  .nav-links a:hover {
+    color: #3b82f6;
+  }
+  
+  /* رسپانسیو برای موبایل */
+  @media (max-width: 768px) {
+    .main-nav {
+      flex-direction: column;
+      padding: 15px;
+    }
+  
+    .logo {
+      margin-bottom: 15px;
+    }
+  
+    .search-box {
+      width: 100%;
+      margin: 15px 0;
+    }
+  
+    .user-menu {
+      width: 100%;
+      justify-content: space-around;
+      margin-top: 15px;
+    }
+  
+    .category-nav {
+      display: none;
+    }
+  }
