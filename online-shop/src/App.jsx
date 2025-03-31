@@ -4,6 +4,8 @@ import Header from './components/header/Header';
 import EventSlider from './components/EventNavbar/EventSlider';
 import SpecialOffers from './components/specialOffers/SpecialOffers';
 import Products from './components/products/Products';
+import Footer from './components/footer/footer';
+
 
 function App() {
 
@@ -19,7 +21,10 @@ function App() {
 
 </Routes>
 
+<Footer/>
 </Router>
+
+
   )
 }
 

@@ -15,7 +15,7 @@ const Products = () => {
       discount: 15,
       rating: 4.5,
       reviewsCount: 42,
-      images: ['https://example.com/lipstick1.jpg'],
+      images: ['https://pics.mootanroo.com/insecure/size:384:0/quality:90/plain/https://api.mootanroo.com/images/thumbs/0272285_balm.jpg.jpeg'],
       stock: 10,
       isNew: true
     },
@@ -28,7 +28,7 @@ const Products = () => {
       discount: 0,
       rating: 4.2,
       reviewsCount: 35,
-      images: ['https://example.com/eyeliner1.jpg'],
+      images: ['https://pics.mootanroo.com/insecure/size:384:0/quality:90/plain/https://api.mootanroo.com/images/thumbs/0285972_comeon-nail-polish-remover-246150041601.jpg.jpeg'],
       stock: 15,
       isNew: false
     },
@@ -41,7 +41,7 @@ const Products = () => {
       discount: 20,
       rating: 4.7,
       reviewsCount: 28,
-      images: ['https://example.com/foundation1.jpg'],
+      images: ['https://pics.mootanroo.com/insecure/size:384:0/quality:90/plain/https://api.mootanroo.com/images/thumbs/0214571_cerita-eyebrow-enhancer-214130011201.jpg.jpeg'],
       stock: 5,
       isNew: true
     },
@@ -54,7 +54,7 @@ const Products = () => {
       discount: 10,
       rating: 4.3,
       reviewsCount: 56,
-      images: ['https://example.com/lipstick2.jpg'],
+      images: ['https://pics.mootanroo.com/insecure/size:384:0/quality:90/plain/https://api.mootanroo.com/images/thumbs/0272627_no-brand-201281622508.jpg.jpeg '],
       stock: 0,
       isNew: false
     },
@@ -67,7 +67,7 @@ const Products = () => {
       discount: 0,
       rating: 4.0,
       reviewsCount: 39,
-      images: ['https://example.com/eyeliner2.jpg'],
+      images: ['https://pics.mootanroo.com/insecure/size:384:0/quality:90/plain/https://api.mootanroo.com/images/thumbs/0193082_-.jpeg'],
       stock: 20,
       isNew: false
     },
@@ -80,7 +80,7 @@ const Products = () => {
       discount: 15,
       rating: 4.5,
       reviewsCount: 42,
-      images: ['https://example.com/lipstick1.jpg'],
+      images: ['https://pics.mootanroo.com/insecure/size:384:0/quality:90/plain/https://api.mootanroo.com/images/thumbs/0377988_7010.jpeg   '],
       stock: 10,
       isNew: true
     },
@@ -93,7 +93,7 @@ const Products = () => {
       discount: 0,
       rating: 4.2,
       reviewsCount: 35,
-      images: ['https://example.com/eyeliner1.jpg'],
+      images: ['https://pics.mootanroo.com/insecure/size:384:0/quality:90/plain/https://api.mootanroo.com/images/thumbs/0287772_real-techniques-set-brush-pad-01786-201282012511.jpg.jpeg'],
       stock: 15,
       isNew: false
     },
@@ -106,7 +106,7 @@ const Products = () => {
       discount: 20,
       rating: 4.7,
       reviewsCount: 28,
-      images: ['https://example.com/foundation1.jpg'],
+      images: ['https://pics.mootanroo.com/insecure/size:384:0/quality:90/plain/https://api.mootanroo.com/images/thumbs/0369687_-.jpeg'],
       stock: 5,
       isNew: true
     },
@@ -119,7 +119,7 @@ const Products = () => {
       discount: 10,
       rating: 4.3,
       reviewsCount: 56,
-      images: ['https://example.com/lipstick2.jpg'],
+      images: ['https://pics.mootanroo.com/insecure/size:384:0/quality:90/plain/https://api.mootanroo.com/images/thumbs/0296739_saloni-17900000003.jpg.jpeg'],
       stock: 0,
       isNew: false
     },
@@ -132,7 +132,7 @@ const Products = () => {
       discount: 0,
       rating: 4.0,
       reviewsCount: 39,
-      images: ['https://example.com/eyeliner2.jpg'],
+      images: ['https://pics.mootanroo.com/insecure/size:384:0/quality:90/plain/https://api.mootanroo.com/images/thumbs/0397875--15-.jpeg'],
       stock: 20,
       isNew: false
     },
@@ -145,7 +145,7 @@ const Products = () => {
       discount: 5,
       rating: 4.4,
       reviewsCount: 47,
-      images: ['https://example.com/foundation2.jpg'],
+      images: ['https://pics.mootanroo.com/insecure/size:384:0/quality:90/plain/https://api.mootanroo.com/images/thumbs/0272291_comeon-lip-balm-strawberry-246200651401.jpg.jpeg'],
       stock: 8,
       isNew: true
     }
