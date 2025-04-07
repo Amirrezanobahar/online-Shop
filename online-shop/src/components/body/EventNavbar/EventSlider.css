@@ -1,0 +1,47 @@
+.events-slider-container {
+    /* margin: 2rem auto; */
+    /* max-width: 1200px; */
+  }
+  
+  .event-slide {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  
+  .slide-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+  }
+  
+  .slide-content {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: white;
+    padding: 2rem;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    width: 100%;
+  }
+  
+  .cta-button {
+    background-color: #e44d26;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    margin-top: 1rem;
+    cursor: pointer;
+  }
+  
+  /* رسپانسیو برای موبایل */
+  @media (max-width: 768px) {
+    .slide-image {
+      height: 250px;
+    }
+    
+    .slide-content {
+      padding: 1rem;
+    }
+  }

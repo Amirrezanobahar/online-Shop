@@ -1,0 +1,176 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #f5f5f5;
+    padding: 20px;
+    direction: rtl;
+    font-family: 'IRANSans', Arial, sans-serif;
+  }
+  
+  .login-form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 450px;
+  }
+  
+  .login-form h2 {
+    text-align: center;
+    color: #3f4064;
+    margin-bottom: 25px;
+    font-size: 22px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+    position: relative;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #3f4064;
+    display: flex;
+    align-items: center;
+  }
+  
+  .input-icon {
+    margin-left: 8px;
+    color: #a1a3a8;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #e0e0e2;
+    border-radius: 5px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+  }
+  
+  .form-group input:focus {
+    outline: none;
+    border-color: #3f4064;
+  }
+  
+  .has-error input {
+    border-color: #ef3b50;
+  }
+  
+  .error-text {
+    color: #ef3b50;
+    font-size: 12px;
+    margin-top: 5px;
+    display: block;
+  }
+  
+  .error-message {
+    background-color: #ffebee;
+    color: #ef3b50;
+    padding: 10px 15px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    text-align: center;
+  }
+  
+  .password-input {
+    position: relative;
+  }
+  
+  .toggle-password {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #a1a3a8;
+  }
+  
+  .form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 13px;
+  }
+  
+  .remember-me {
+    display: flex;
+    align-items: center;
+  }
+  
+  .remember-me input {
+    margin-left: 5px;
+  }
+  
+  .forgot-password {
+    color: #3f4064;
+    text-decoration: none;
+  }
+  
+  .forgot-password:hover {
+    color: #ef394e;
+    text-decoration: underline;
+  }
+  
+  .submit-btn {
+    width: 100%;
+    padding: 12px;
+    background-color: #ef394e;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-btn:hover {
+    background-color: #d32f42;
+  }
+  
+  .submit-btn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  .register-link {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+    color: #3f4064;
+  }
+  
+  .register-btn {
+    color: #3f4064;
+    margin-right: 5px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .register-btn:hover {
+    color: #ef394e;
+    text-decoration: underline;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 480px) {
+    .login-form {
+      padding: 20px;
+    }
+    
+    .form-options {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  }
