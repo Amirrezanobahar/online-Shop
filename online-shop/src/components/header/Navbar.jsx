@@ -37,7 +37,7 @@ export default function Navbar() {
         {/* منوی کاربر */}
         <div className='user-menu'>
           {/* آیتم ورود */}
-          <Link to='/login' className='menu-item'>
+          <Link to='/register' className='menu-item'>
             <User size={24} />
             <span>ورود | ثبت‌نام</span>
           </Link>

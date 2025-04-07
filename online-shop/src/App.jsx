@@ -1,23 +1,21 @@
 import './App.css'
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Header from './components/header/Header';
-import EventSlider from './components/EventNavbar/EventSlider';
-import SpecialOffers from './components/specialOffers/SpecialOffers';
-import Products from './components/products/Products';
 import Footer from './components/footer/footer';
+import Register from './components/register/Register';
+import Body from './components/body/Body';
+import Header from './components/header/Header'
 
 
 function App() {
 
   return (
 <Router>
-
 <Header/>
-<EventSlider/>
-<SpecialOffers/>
-<Products/>
+
 
 <Routes>
+  <Route path="/" element={<Body/>} />
+<Route path="/register" element={<Register/>} />
 
 </Routes>
 
