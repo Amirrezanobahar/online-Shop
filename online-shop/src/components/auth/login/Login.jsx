@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { FaUser, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from 'axios';
 import './Login.css'; // Create this CSS file
+import Swal from 'sweetalert2';
+
 
 const Login = () => {
   const navigate = useNavigate();
@@ -52,23 +54,37 @@ const Login = () => {
     if (validate()) {
       setIsSubmitting(true);
       try {
-        const response = await axios.post('/api/users/login', {
+        const response = await axios.post('http://127.0.0.1:5000/user/login', {
           username: formData.username,
           password: formData.password
         });
-
+  
         // Login successful
         localStorage.setItem('token', response.data.token);
+        Swal.fire({
+          icon: 'success',
+          title: 'ورود موفقیت‌آمیز',
+          text: 'به حساب کاربری خود خوش آمدید!',
+          confirmButtonText: 'باشه'
+        });
         navigate('/'); // Redirect to home page
       } catch (error) {
         if (error.response) {
-          if (error.response.status === 401) {
-            setServerError('نام کاربری یا رمز عبور اشتباه است');
-          } else {
-            setServerError('خطای سرور. لطفا دوباره تلاش کنید');
-          }
+          Swal.fire({
+            icon: 'error',
+            title: 'خطا',
+            text: error.response.status === 401 
+              ? 'نام کاربری یا رمز عبور اشتباه است' 
+              : 'خطای سرور. لطفا دوباره تلاش کنید',
+            confirmButtonText: 'باشه'
+          });
         } else {
-          setServerError('خطای شبکه. اتصال اینترنت را بررسی کنید');
+          Swal.fire({
+            icon: 'error',
+            title: 'خطای شبکه',
+            text: 'اتصال اینترنت را بررسی کنید',
+            confirmButtonText: 'باشه'
+          });
         }
       } finally {
         setIsSubmitting(false);
