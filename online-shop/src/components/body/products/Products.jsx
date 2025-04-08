@@ -7,7 +7,7 @@ const Products = () => {
   // آرایه محصولات نمونه
   const mockProducts = [
     {
-      _id: '1',
+      _id: '67f43502ab8c0e324f96805d',
       name: 'رژلب مایع مایبلین',
       brand: 'maybelline',
       category: 'lipstick',
