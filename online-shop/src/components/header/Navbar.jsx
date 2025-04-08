@@ -1,9 +1,39 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Search, ShoppingCart, User, ChevronDown } from 'lucide-react';
-import './Navbar.css'; // فایل CSS جداگانه
+import { Search, ShoppingCart, User, ChevronDown, LayoutDashboard, UserCircle } from 'lucide-react';
+import { GetUserRole } from './../auth/panel/GetUserRole ';
+import './Navbar.css';
 
 export default function Navbar() {
+  const [userRole, setUserRole] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchUserRole = async () => {
+      try {
+        const role = await GetUserRole();
+        setUserRole(role);
+      } catch (error) {
+        console.error('Error fetching user role:', error);
+        setUserRole(null);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchUserRole();
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="navbar-loading">
+        {/* Placeholder while loading */}
+        <div className="top-bar"></div>
+        <div className="main-nav"></div>
+      </div>
+    );
+  }
+
   return (
     <div className='navbar'>
       {/* نوار اطلاع رسانی */}
@@ -11,7 +41,7 @@ export default function Navbar() {
         <p>ارسال رایگان برای سفارش‌های بالای ۵۰۰ هزار تومان</p>
       </div>
 
-      {/* بخش اصلی نوار导航 */}
+      {/* بخش اصلی نوار ناوبری */}
       <div className='main-nav'>
         {/* لوگو */}
         <Link to='/' className='logo'>
@@ -36,11 +66,18 @@ export default function Navbar() {
 
         {/* منوی کاربر */}
         <div className='user-menu'>
-          {/* آیتم ورود */}
-          <Link to='/register' className='menu-item'>
-            <User size={24} />
-            <span>ورود | ثبت‌نام</span>
-          </Link>
+          {/* نمایش پنل کاربری یا مدیریت بر اساس نقش */}
+          {userRole === 'ADMIN' ? (
+            <Link to='/admin-panel' className='menu-item admin'>
+              <LayoutDashboard size={24} />
+              <span>پنل مدیریت</span>
+            </Link>
+          ) : (
+            <Link to='/user-profile' className='menu-item'>
+              <UserCircle size={24} />
+              <span>پنل کاربری</span>
+            </Link>
+          )}
 
           {/* آیتم سبد خرید */}
           <Link to='/cart' className='menu-item cart'>
@@ -48,6 +85,19 @@ export default function Navbar() {
             <span className='badge'>۰</span>
             <span>سبد خرید</span>
           </Link>
+
+          {/* آیتم ورود/خروج */}
+          {!userRole ? (
+            <Link to='/login' className='menu-item'>
+              <User size={24} />
+              <span>ورود | ثبت‌نام</span>
+            </Link>
+          ) : (
+            <Link to='/logout' className='menu-item'>
+              <User size={24} />
+              <span>خروج</span>
+            </Link>
+          )}
         </div>
       </div>
 
