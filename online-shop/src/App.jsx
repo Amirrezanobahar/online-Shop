@@ -7,9 +7,9 @@ import Body from './components/body/Body';
 import Header from './components/header/Header'
 import ProductDetail from './components/body/productDetail/ProductDetail';
 import ProtectedRoute from './components/auth/panel/ProtectedRoute';
-import AdminPanel from './components/panel/AdminPanel';
+import AdminPanel from './components/panel/adminPanel/mainPage/AdminPanel';
 import { AuthProvider } from './components/auth/logout/AuthContext';
-
+import ProductsAdmin from './components/panel/adminPanel/products/ProductsAdmin'
 
 
 function App() {
@@ -26,6 +26,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/products/:id" element={<ProductDetail/>} />
+        <Route path="/admin/products" element={<ProductsAdmin/>} />
         <Route
           path="/admin-panel"
           element={
