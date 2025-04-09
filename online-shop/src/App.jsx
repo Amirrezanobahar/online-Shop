@@ -8,12 +8,14 @@ import Header from './components/header/Header'
 import ProductDetail from './components/body/productDetail/ProductDetail';
 import ProtectedRoute from './components/auth/panel/ProtectedRoute';
 import AdminPanel from './components/panel/AdminPanel';
+import { AuthProvider } from './components/auth/logout/AuthContext';
 
 
 
 function App() {
 
   return (
+    <AuthProvider>
     <Router>
       <Header />
 
@@ -38,6 +40,7 @@ function App() {
 
       <Footer />
     </Router>
+    </AuthProvider>
 
 
   )
