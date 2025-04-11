@@ -25,6 +25,13 @@ const ProductsAdmin = () => {
     subCategories: []
   });
   const [newSubCategory, setNewSubCategory] = useState('');
+  const [openBrandDialog, setOpenBrandDialog] = useState(false);
+  const [newBrand, setNewBrand] = useState({
+    name: '',
+    description: '',
+    logo: '',
+    isFeatured: false
+  });
 
   // حالت اولیه محصول
   const initialProductState = {
@@ -69,28 +76,22 @@ const ProductsAdmin = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const [productsRes, categoriesRes] = await Promise.all([
+        const [productsRes, brandsRes, categoriesRes] = await Promise.all([
           axios.get('http://127.0.0.1:5000/product/'),
+          axios.get('http://127.0.0.1:5000/brand'),
           axios.get('http://127.0.0.1:5000/category')
         ]);
-        console.log(categoriesRes);
-
 
         setProducts(productsRes.data);
+        setBrands(brandsRes.data);
         setCategories(categoriesRes.data);
-
-        // اگر نیاز به دریافت برندها دارید:
-        // const brandsRes = await axios.get('http://127.0.0.1:5000/brand/');
-        // setBrands(brandsRes.data);
       } catch (error) {
         showSnackbar('خطا در دریافت داده‌ها', 'error');
-        console.error('Fetch error:', error);
       }
     };
 
     fetchData();
   }, []);
-
 
   // توابع کمکی
   const handleOpenCategoryDialog = () => {
@@ -139,6 +140,40 @@ const ProductsAdmin = () => {
       handleCloseCategoryDialog();
     } catch (error) {
       showSnackbar('خطا در ایجاد دسته‌بندی', 'error');
+    }
+  };
+  const handleOpenBrandDialog = () => {
+    
+    setOpenBrandDialog(true);
+  };
+
+  const handleCloseBrandDialog = () => {
+    setOpenBrandDialog(false);
+    setNewBrand({
+      name: '',
+      description: '',
+      logo: '',
+      isFeatured: false
+    });
+  };
+
+  const handleBrandInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewBrand({ ...newBrand, [name]: value });
+  };
+
+  const handleCreateBrand = async () => {
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/brand', newBrand);
+      showSnackbar('برند با موفقیت ایجاد شد', 'success');
+
+      // بروزرسانی لیست برندها
+      const res = await axios.get('http://127.0.0.1:5000/brand');
+      setBrands(res.data);
+
+      handleCloseBrandDialog();
+    } catch (error) {
+      showSnackbar('خطا در ایجاد برند', 'error');
     }
   };
   const showSnackbar = (message, severity) => {
@@ -259,7 +294,16 @@ const ProductsAdmin = () => {
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4">مدیریت محصولات آرایشی</Typography>
+
         <Box>
+          <Button
+            variant="outlined"
+            onClick={handleOpenBrandDialog}
+            sx={{ mr: 2 }}
+            startIcon={<Add />}
+          >
+            افزودن برند
+          </Button>
           <Button
             variant="outlined"
             onClick={handleOpenCategoryDialog}
@@ -278,6 +322,8 @@ const ProductsAdmin = () => {
         </Box>
       </Box>
 
+
+
       {/* جدول محصولات */}
       <TableContainer component={Paper}>
         <Table>
@@ -289,6 +335,7 @@ const ProductsAdmin = () => {
               <TableCell>موجودی</TableCell>
               <TableCell>رنگ‌ها</TableCell>
               <TableCell>عملیات</TableCell>
+              <TableCell>زیر دسته بندی</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -356,11 +403,11 @@ const ProductsAdmin = () => {
                 onChange={handleProductInputChange}
                 label="برند"
               >
-                {/* {brands.map((brand) => (
+                {brands?.map((brand) => (
                   <MenuItem key={brand._id} value={brand._id}>
                     {brand.name}
                   </MenuItem>
-                ))} */}
+                ))}
               </Select>
             </FormControl>
 
@@ -657,6 +704,8 @@ const ProductsAdmin = () => {
         </DialogActions>
       </Dialog>
 
+      
+
       {/* اعلان‌ها */}
       {/* دیالوگ ایجاد دسته‌بندی جدید */}
       <Dialog open={openCategoryDialog} onClose={handleCloseCategoryDialog} maxWidth="sm" fullWidth>
@@ -741,6 +790,73 @@ const ProductsAdmin = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
+      {/* اعلان‌ها */}
+<Snackbar
+  open={snackbar.open}
+  autoHideDuration={6000}
+  onClose={handleCloseSnackbar}
+  anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+>
+  <Alert onClose={handleCloseSnackbar} severity={snackbar.severity}>
+    {snackbar.message}
+  </Alert>
+</Snackbar>
+
+{/* دیالوگ ایجاد برند جدید */}
+<Dialog open={openBrandDialog} onClose={handleCloseBrandDialog} maxWidth="sm" fullWidth>
+  <DialogTitle>ایجاد برند جدید</DialogTitle>
+  <DialogContent dividers>
+    <Box sx={{ mt: 2 }}>
+      <TextField
+        name="name"
+        label="نام برند*"
+        value={newBrand.name}
+        onChange={handleBrandInputChange}
+        fullWidth
+        margin="normal"
+      />
+      
+      <TextField
+        name="description"
+        label="توضیحات"
+        value={newBrand.description}
+        onChange={handleBrandInputChange}
+        fullWidth
+        margin="normal"
+        multiline
+        rows={3}
+      />
+      
+      <TextField
+        name="logo"
+        label="آدرس لوگو"
+        value={newBrand.logo}
+        onChange={handleBrandInputChange}
+        fullWidth
+        margin="normal"
+      />
+      
+      <FormControlLabel
+        control={
+          <Checkbox
+            name="isFeatured"
+            checked={newBrand.isFeatured}
+            onChange={(e) => setNewBrand({ ...newBrand, isFeatured: e.target.checked })}
+          />
+        }
+        label="برند ویژه"
+      />
+    </Box>
+  </DialogContent>
+  <DialogActions>
+    <Button onClick={handleCloseBrandDialog} color="secondary">
+      انصراف
+    </Button>
+    <Button onClick={handleCreateBrand} color="primary" variant="contained">
+      ایجاد برند
+    </Button>
+  </DialogActions>
+</Dialog>
     </Box>
   );
 };
