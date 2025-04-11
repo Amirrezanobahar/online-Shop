@@ -55,7 +55,7 @@ const ProductsAdmin = () => {
     images: [],
     videoUrl: '',
     isFeatured: false,
-    isNew: false,
+    isNewProduct: false,
     tags: []
   };
 
@@ -78,8 +78,8 @@ const ProductsAdmin = () => {
       try {
         const [productsRes, brandsRes, categoriesRes] = await Promise.all([
           axios.get('http://127.0.0.1:5000/product/'),
-          axios.get('http://127.0.0.1:5000/brand'),
-          axios.get('http://127.0.0.1:5000/category')
+          axios.get('http://127.0.0.1:5000/brand/'),
+          axios.get('http://127.0.0.1:5000/category/')
         ]);
 
         setProducts(productsRes.data);
@@ -143,7 +143,7 @@ const ProductsAdmin = () => {
     }
   };
   const handleOpenBrandDialog = () => {
-    
+
     setOpenBrandDialog(true);
   };
 
@@ -294,32 +294,63 @@ const ProductsAdmin = () => {
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4">مدیریت محصولات آرایشی</Typography>
+        <Box 
+  sx={{ 
+    display: 'flex', 
+    gap: 2,
+    flexWrap: 'wrap',
+    mb: 3
+  }}
+>
+  <Button
+    variant="contained"
+    onClick={handleOpenBrandDialog}
+    startIcon={<Add />}
+    sx={{ 
+      bgcolor: '#4CAF50', // سبز
+      '&:hover': { bgcolor: '#45a049' },
+      minWidth: 180,
+      borderRadius: '8px',
+      boxShadow: 2,
+      transition: 'all 0.3s ease'
+    }}
+  >
+    افزودن برند جدید
+  </Button>
 
-        <Box>
-          <Button
-            variant="outlined"
-            onClick={handleOpenBrandDialog}
-            sx={{ mr: 2 }}
-            startIcon={<Add />}
-          >
-            افزودن برند
-          </Button>
-          <Button
-            variant="outlined"
-            onClick={handleOpenCategoryDialog}
-            sx={{ mr: 2 }}
-            startIcon={<Add />}
-          >
-            افزودن دسته‌بندی
-          </Button>
-          <Button
-            variant="contained"
-            startIcon={<Add />}
-            onClick={() => handleOpenDialog()}
-          >
-            افزودن محصول جدید
-          </Button>
-        </Box>
+  <Button
+    variant="contained"
+    onClick={handleOpenCategoryDialog}
+    startIcon={<Add />}
+    sx={{ 
+      bgcolor: '#2196F3', // آبی
+      '&:hover': { bgcolor: '#1976D2' },
+      minWidth: 180,
+      borderRadius: '8px',
+      boxShadow: 2,
+      transition: 'all 0.3s ease'
+    }}
+  >
+    افزودن دسته‌بندی
+  </Button>
+
+  <Button
+    variant="contained"
+    startIcon={<Add />}
+    onClick={() => handleOpenDialog()}
+    sx={{ 
+      bgcolor: '#9C27B0', // بنفش
+      '&:hover': { bgcolor: '#7B1FA2' },
+      minWidth: 180,
+      borderRadius: '8px',
+      boxShadow: 3,
+      transition: 'all 0.3s ease',
+      transform: 'scale(1.05)'
+    }}
+  >
+    افزودن محصول جدید
+  </Button>
+</Box>
       </Box>
 
 
@@ -327,28 +358,27 @@ const ProductsAdmin = () => {
       {/* جدول محصولات */}
       <TableContainer component={Paper}>
         <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>نام محصول</TableCell>
-              <TableCell>برند</TableCell>
-              <TableCell>قیمت</TableCell>
-              <TableCell>موجودی</TableCell>
-              <TableCell>رنگ‌ها</TableCell>
-              <TableCell>عملیات</TableCell>
-              <TableCell>زیر دسته بندی</TableCell>
+          <TableHead  style={{textAlign:'center'}}>
+            <TableRow  style={{textAlign:'center'}}>
+              <TableCell sx={{ width: '15%', minWidth: 200 }} style={{ textAlign: 'center' }}  >نام محصول</TableCell>
+              <TableCell sx={{ width: '25%', minWidth: 150 }} style={{ textAlign: 'center' }} >برند</TableCell>
+              <TableCell sx={{ width: '15%', minWidth: 120 }} style={{ textAlign: 'center' }}>قیمت</TableCell>
+              <TableCell sx={{ width: '10%', minWidth: 100 }} style={{ textAlign: 'center' }} >موجودی</TableCell>
+              <TableCell sx={{ width: '25%', minWidth: 200 }} style={{ textAlign: 'center' }}>رنگ‌ها</TableCell>
+              <TableCell sx={{ width: '10%', minWidth: 100 }} style={{ textAlign: 'center' }}>عملیات</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {products.map((product) => (
               <TableRow key={product._id}>
-                <TableCell>{product.name}</TableCell>
-                <TableCell>
-                  {/* {brands.find(b => b._id === product.brand)?.name || product.brand} */}
+                <TableCell  style={{textAlign:'center'}}>{product.name}</TableCell>
+                <TableCell  style={{textAlign:'center'}}>
+                  {brands.find(b => b._id === product.brand)?.name || product.brand}
                 </TableCell>
-                <TableCell>{product.price.toLocaleString('fa-IR')} تومان</TableCell>
-                <TableCell>{product.stock}</TableCell>
-                <TableCell>
-                  <Box sx={{ display: 'flex', gap: 1 }}>
+                <TableCell  style={{textAlign:'center'}}>{product.price.toLocaleString('fa-IR')} تومان</TableCell>
+                <TableCell  style={{textAlign:'center'}}>{product.stock}</TableCell>
+                <TableCell  style={{textAlign:'center'}}>
+                  <Box sx={{ display: 'flex', gap: 1 }} style={{display:'flex',justifyContent:"center"}}>
                     {product.colors?.map((color, index) => (
                       <Box
                         key={index}
@@ -364,7 +394,7 @@ const ProductsAdmin = () => {
                     ))}
                   </Box>
                 </TableCell>
-                <TableCell>
+                <TableCell  style={{textAlign:'center'}}>
                   <IconButton onClick={() => handleOpenDialog(product)}>
                     <Edit color="primary" />
                   </IconButton>
@@ -424,6 +454,7 @@ const ProductsAdmin = () => {
                     {category.name}
                   </MenuItem>
                 ))}
+
               </Select>
             </FormControl>
 
@@ -679,12 +710,12 @@ const ProductsAdmin = () => {
               <FormControlLabel
                 control={
                   <Checkbox
-                    name="isNew"
-                    checked={currentProduct?.isNew || false}
+                    name="isNewProduct"
+                    checked={currentProduct?.isNewProduct || false}
                     onChange={(e) => {
                       setCurrentProduct({
                         ...currentProduct,
-                        isNew: e.target.checked
+                        isNewProduct: e.target.checked
                       });
                     }}
                   />
@@ -704,7 +735,7 @@ const ProductsAdmin = () => {
         </DialogActions>
       </Dialog>
 
-      
+
 
       {/* اعلان‌ها */}
       {/* دیالوگ ایجاد دسته‌بندی جدید */}
@@ -791,72 +822,72 @@ const ProductsAdmin = () => {
         </Alert>
       </Snackbar>
       {/* اعلان‌ها */}
-<Snackbar
-  open={snackbar.open}
-  autoHideDuration={6000}
-  onClose={handleCloseSnackbar}
-  anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
->
-  <Alert onClose={handleCloseSnackbar} severity={snackbar.severity}>
-    {snackbar.message}
-  </Alert>
-</Snackbar>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+      >
+        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity}>
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
 
-{/* دیالوگ ایجاد برند جدید */}
-<Dialog open={openBrandDialog} onClose={handleCloseBrandDialog} maxWidth="sm" fullWidth>
-  <DialogTitle>ایجاد برند جدید</DialogTitle>
-  <DialogContent dividers>
-    <Box sx={{ mt: 2 }}>
-      <TextField
-        name="name"
-        label="نام برند*"
-        value={newBrand.name}
-        onChange={handleBrandInputChange}
-        fullWidth
-        margin="normal"
-      />
-      
-      <TextField
-        name="description"
-        label="توضیحات"
-        value={newBrand.description}
-        onChange={handleBrandInputChange}
-        fullWidth
-        margin="normal"
-        multiline
-        rows={3}
-      />
-      
-      <TextField
-        name="logo"
-        label="آدرس لوگو"
-        value={newBrand.logo}
-        onChange={handleBrandInputChange}
-        fullWidth
-        margin="normal"
-      />
-      
-      <FormControlLabel
-        control={
-          <Checkbox
-            name="isFeatured"
-            checked={newBrand.isFeatured}
-            onChange={(e) => setNewBrand({ ...newBrand, isFeatured: e.target.checked })}
-          />
-        }
-        label="برند ویژه"
-      />
-    </Box>
-  </DialogContent>
-  <DialogActions>
-    <Button onClick={handleCloseBrandDialog} color="secondary">
-      انصراف
-    </Button>
-    <Button onClick={handleCreateBrand} color="primary" variant="contained">
-      ایجاد برند
-    </Button>
-  </DialogActions>
-</Dialog>
+      {/* دیالوگ ایجاد برند جدید */}
+      <Dialog open={openBrandDialog} onClose={handleCloseBrandDialog} maxWidth="sm" fullWidth>
+        <DialogTitle>ایجاد برند جدید</DialogTitle>
+        <DialogContent dividers>
+          <Box sx={{ mt: 2 }}>
+            <TextField
+              name="name"
+              label="نام برند*"
+              value={newBrand.name}
+              onChange={handleBrandInputChange}
+              fullWidth
+              margin="normal"
+            />
+
+            <TextField
+              name="description"
+              label="توضیحات"
+              value={newBrand.description}
+              onChange={handleBrandInputChange}
+              fullWidth
+              margin="normal"
+              multiline
+              rows={3}
+            />
+
+            <TextField
+              name="logo"
+              label="آدرس لوگو"
+              value={newBrand.logo}
+              onChange={handleBrandInputChange}
+              fullWidth
+              margin="normal"
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="isFeatured"
+                  checked={newBrand.isFeatured}
+                  onChange={(e) => setNewBrand({ ...newBrand, isFeatured: e.target.checked })}
+                />
+              }
+              label="برند ویژه"
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseBrandDialog} color="secondary">
+            انصراف
+          </Button>
+          <Button onClick={handleCreateBrand} color="primary" variant="contained">
+            ایجاد برند
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
