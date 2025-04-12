@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import ImageUploader from './ImageUploader';
 import {
   Box, Typography, Button, Table, TableBody, TableCell, TableContainer,
   TableHead, TableRow, Paper, Dialog, DialogTitle, DialogContent,
@@ -32,6 +33,7 @@ const ProductsAdmin = () => {
     logo: '',
     isFeatured: false
   });
+
 
   // حالت اولیه محصول
   const initialProductState = {
@@ -70,6 +72,37 @@ const ProductsAdmin = () => {
       value: 0,
       unit: 'g'
     }
+  };
+
+  const [selectedImages, setSelectedImages] = useState([]);
+
+  // توابع مدیریت تصاویر
+  // در بخش توابع کامپوننت
+  const handleAddImages = (files) => {
+    // اعتبارسنجی تعداد تصاویر
+    if (selectedImages.length + files.length > 5) {
+      showSnackbar('حداکثر 5 تصویر مجاز است', 'error');
+      return;
+    }
+
+    // تبدیل فایل‌ها به پیش‌نمایش
+    const newImages = files.map(file => ({
+      file,
+      preview: URL.createObjectURL(file),
+      altText: `تصویر محصول ${selectedImages.length + 1}`
+    }));
+
+    setSelectedImages(prev => [...prev, ...newImages]);
+  };
+
+  const handleRemoveImage = (index) => {
+    setSelectedImages(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleAltTextChange = (index, text) => {
+    setSelectedImages(prev => prev.map((img, i) =>
+      i === index ? { ...img, altText: text } : img
+    ));
   };
 
   // دریافت داده‌ها
@@ -239,7 +272,15 @@ const ProductsAdmin = () => {
 
   const handleSubmit = async () => {
     try {
-      // آماده‌سازی داده‌ها برای ارسال
+      const formData = new FormData();
+  
+      // افزودن تصاویر
+      selectedImages.forEach((image) => {
+        formData.append('images', image.file);
+        formData.append('altTexts', image.altText);
+      });
+  
+      // افزودن سایر داده‌ها
       const productData = {
         ...currentProduct,
         price: Number(currentProduct.price),
@@ -247,36 +288,49 @@ const ProductsAdmin = () => {
         stock: Number(currentProduct.stock),
         sold: Number(currentProduct.sold),
         expiryDate: currentProduct.expiryDate ? new Date(currentProduct.expiryDate).toISOString() : null,
-        colors: currentProduct.colors.map(color => ({
+        colors: currentProduct.colors?.map(color => ({
           ...color,
           weight: {
-            value: Number(color.weight.value),
-            unit: color.weight.unit
+            value: Number(color.weight?.value || 0),
+            unit: color.weight?.unit || 'g'
           }
         }))
       };
-
+  
+      Object.entries(productData).forEach(([key, value]) => {
+        formData.append(key, typeof value === 'object' ? JSON.stringify(value) : value);
+      });
+  
+      let response;
+  
       if (currentProduct._id) {
-        await axios.put(`/api/products/${currentProduct._id}`, productData);
-        showSnackbar('محصول با موفقیت ویرایش شد', 'success');
+        response = await axios.put(`http://127.0.0.1:5000/product/${currentProduct._id}`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        showSnackbar(`محصول "${response.data.title}" با موفقیت ویرایش شد`, 'success');
       } else {
-        await axios.post('http://127.0.0.1:5000/product/', productData);
-        showSnackbar('محصول با موفقیت اضافه شد', 'success');
+        response = await axios.post('http://127.0.0.1:5000/product', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        showSnackbar(`محصول "${response.data.title}" با موفقیت اضافه شد`, 'success');
       }
-
+  
       // Refresh data
       const res = await axios.get('http://127.0.0.1:5000/product/');
       setProducts(res.data);
       handleCloseDialog();
+  
     } catch (error) {
       showSnackbar('خطا در ذخیره محصول', 'error');
       console.error('Error saving product:', error);
     }
   };
+  
+
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`/api/products/${id}`);
+      await axios.delete(`http://127.0.0.1:5000/product/${id}`);
       showSnackbar('محصول با موفقیت حذف شد', 'success');
       setProducts(products.filter(p => p._id !== id));
     } catch (error) {
@@ -294,72 +348,71 @@ const ProductsAdmin = () => {
 
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Typography variant="h4">مدیریت محصولات آرایشی</Typography>
-        <Box 
-  sx={{ 
-    display: 'flex', 
-    gap: 2,
-    flexWrap: 'wrap',
-    mb: 3
-  }}
->
-  <Button
-    variant="contained"
-    onClick={handleOpenBrandDialog}
-    startIcon={<Add />}
-    sx={{ 
-      bgcolor: '#4CAF50', // سبز
-      '&:hover': { bgcolor: '#45a049' },
-      minWidth: 180,
-      borderRadius: '8px',
-      boxShadow: 2,
-      transition: 'all 0.3s ease'
-    }}
-  >
-    افزودن برند جدید
-  </Button>
+        <Box
+          sx={{
+            display: 'flex',
+            gap: 2,
+            flexWrap: 'wrap',
+            mb: 3
+          }}
+        >
+          <Button
+            variant="contained"
+            onClick={handleOpenBrandDialog}
+            startIcon={<Add />}
+            sx={{
+              bgcolor: '#4CAF50', // سبز
+              '&:hover': { bgcolor: '#45a049' },
+              minWidth: 180,
+              borderRadius: '8px',
+              boxShadow: 2,
+              transition: 'all 0.3s ease'
+            }}
+          >
+            افزودن برند جدید
+          </Button>
 
-  <Button
-    variant="contained"
-    onClick={handleOpenCategoryDialog}
-    startIcon={<Add />}
-    sx={{ 
-      bgcolor: '#2196F3', // آبی
-      '&:hover': { bgcolor: '#1976D2' },
-      minWidth: 180,
-      borderRadius: '8px',
-      boxShadow: 2,
-      transition: 'all 0.3s ease'
-    }}
-  >
-    افزودن دسته‌بندی
-  </Button>
+          <Button
+            variant="contained"
+            onClick={handleOpenCategoryDialog}
+            startIcon={<Add />}
+            sx={{
+              bgcolor: '#2196F3', // آبی
+              '&:hover': { bgcolor: '#1976D2' },
+              minWidth: 180,
+              borderRadius: '8px',
+              boxShadow: 2,
+              transition: 'all 0.3s ease'
+            }}
+          >
+            افزودن دسته‌بندی
+          </Button>
 
-  <Button
-    variant="contained"
-    startIcon={<Add />}
-    onClick={() => handleOpenDialog()}
-    sx={{ 
-      bgcolor: '#9C27B0', // بنفش
-      '&:hover': { bgcolor: '#7B1FA2' },
-      minWidth: 180,
-      borderRadius: '8px',
-      boxShadow: 3,
-      transition: 'all 0.3s ease',
-      transform: 'scale(1.05)'
-    }}
-  >
-    افزودن محصول جدید
-  </Button>
-</Box>
+          <Button
+            variant="contained"
+            startIcon={<Add />}
+            onClick={() => handleOpenDialog()}
+            sx={{
+              bgcolor: '#9C27B0', // بنفش
+              '&:hover': { bgcolor: '#7B1FA2' },
+              minWidth: 180,
+              borderRadius: '8px',
+              boxShadow: 3,
+              transition: 'all 0.3s ease',
+              transform: 'scale(1.05)'
+            }}
+          >
+            افزودن محصول جدید
+          </Button>
+        </Box>
       </Box>
-
 
 
       {/* جدول محصولات */}
       <TableContainer component={Paper}>
         <Table>
-          <TableHead  style={{textAlign:'center'}}>
-            <TableRow  style={{textAlign:'center'}}>
+          <TableHead style={{ textAlign: 'center' }}>
+            <TableRow style={{ textAlign: 'center' }}>
               <TableCell sx={{ width: '15%', minWidth: 200 }} style={{ textAlign: 'center' }}  >نام محصول</TableCell>
               <TableCell sx={{ width: '25%', minWidth: 150 }} style={{ textAlign: 'center' }} >برند</TableCell>
               <TableCell sx={{ width: '15%', minWidth: 120 }} style={{ textAlign: 'center' }}>قیمت</TableCell>
@@ -371,14 +424,14 @@ const ProductsAdmin = () => {
           <TableBody>
             {products.map((product) => (
               <TableRow key={product._id}>
-                <TableCell  style={{textAlign:'center'}}>{product.name}</TableCell>
-                <TableCell  style={{textAlign:'center'}}>
+                <TableCell style={{ textAlign: 'center' }}>{product.name}</TableCell>
+                <TableCell style={{ textAlign: 'center' }}>
                   {brands.find(b => b._id === product.brand)?.name || product.brand}
                 </TableCell>
-                <TableCell  style={{textAlign:'center'}}>{product.price.toLocaleString('fa-IR')} تومان</TableCell>
-                <TableCell  style={{textAlign:'center'}}>{product.stock}</TableCell>
-                <TableCell  style={{textAlign:'center'}}>
-                  <Box sx={{ display: 'flex', gap: 1 }} style={{display:'flex',justifyContent:"center"}}>
+                <TableCell style={{ textAlign: 'center' }}>{product.price.toLocaleString('fa-IR')} تومان</TableCell>
+                <TableCell style={{ textAlign: 'center' }}>{product.stock}</TableCell>
+                <TableCell style={{ textAlign: 'center' }}>
+                  <Box sx={{ display: 'flex', gap: 1 }} style={{ display: 'flex', justifyContent: "center" }}>
                     {product.colors?.map((color, index) => (
                       <Box
                         key={index}
@@ -393,8 +446,9 @@ const ProductsAdmin = () => {
                       />
                     ))}
                   </Box>
+
                 </TableCell>
-                <TableCell  style={{textAlign:'center'}}>
+                <TableCell style={{ textAlign: 'center' }}>
                   <IconButton onClick={() => handleOpenDialog(product)}>
                     <Edit color="primary" />
                   </IconButton>
@@ -408,14 +462,19 @@ const ProductsAdmin = () => {
         </Table>
       </TableContainer>
 
-      {/* فرم محصول */}
       <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="md" fullWidth>
         <DialogTitle>
           {currentProduct?._id ? 'ویرایش محصول' : 'افزودن محصول جدید'}
         </DialogTitle>
+
         <DialogContent dividers>
-          <Box sx={{ mt: 2, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 2 }}>
-            {/* اطلاعات پایه */}
+          <Box sx={{ mt: 2, display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 3 }}>
+
+            {/* --- اطلاعات پایه --- */}
+            <Typography variant="h6" sx={{ gridColumn: '1 / -1' }}>
+              اطلاعات پایه
+            </Typography>
+
             <TextField
               name="name"
               label="نام محصول*"
@@ -454,7 +513,6 @@ const ProductsAdmin = () => {
                     {category.name}
                   </MenuItem>
                 ))}
-
               </Select>
             </FormControl>
 
@@ -474,7 +532,11 @@ const ProductsAdmin = () => {
               </Select>
             </FormControl>
 
-            {/* قیمت و موجودی */}
+            {/* --- قیمت و موجودی --- */}
+            <Typography variant="h6" sx={{ gridColumn: '1 / -1', mt: 2 }}>
+              قیمت و موجودی
+            </Typography>
+
             <TextField
               name="price"
               label="قیمت (تومان)*"
@@ -519,7 +581,11 @@ const ProductsAdmin = () => {
               inputProps={{ min: 0 }}
             />
 
-            {/* تاریخ انقضا */}
+            {/* --- تاریخ انقضا و توضیحات --- */}
+            <Typography variant="h6" sx={{ gridColumn: '1 / -1', mt: 2 }}>
+              توضیحات و تاریخ انقضا
+            </Typography>
+
             <TextField
               name="expiryDate"
               label="تاریخ انقضا"
@@ -531,7 +597,6 @@ const ProductsAdmin = () => {
               margin="normal"
             />
 
-            {/* توضیحات */}
             <TextField
               name="description"
               label="توضیحات محصول*"
@@ -543,7 +608,6 @@ const ProductsAdmin = () => {
               rows={3}
             />
 
-            {/* ویژگی‌ها */}
             <TextField
               name="features"
               label="ویژگی‌ها (با کاما جدا کنید)"
@@ -560,8 +624,8 @@ const ProductsAdmin = () => {
               rows={2}
             />
 
-            {/* رنگ‌ها */}
-            <Box sx={{ gridColumn: '1 / -1' }}>
+            {/* --- رنگ‌ها --- */}
+            <Box sx={{ gridColumn: '1 / -1', mt: 2 }}>
               <Typography variant="h6" gutterBottom>
                 رنگ‌ها
                 <Button
@@ -579,6 +643,7 @@ const ProductsAdmin = () => {
                   key={index}
                   expanded={expandedColor === index}
                   onChange={() => setExpandedColor(expandedColor === index ? null : index)}
+                  sx={{ mb: 1, borderRadius: 2, boxShadow: 1 }}
                 >
                   <AccordionSummary expandIcon={<ExpandMore />}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -596,6 +661,8 @@ const ProductsAdmin = () => {
                   </AccordionSummary>
                   <AccordionDetails>
                     <Box sx={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: 2, mt: 1 }}>
+
+                      {/* نام رنگ و کد رنگ */}
                       <TextField
                         name="name"
                         label="نام رنگ"
@@ -604,7 +671,6 @@ const ProductsAdmin = () => {
                         fullWidth
                         margin="normal"
                       />
-
                       <TextField
                         name="hexCode"
                         label="کد رنگ"
@@ -616,6 +682,7 @@ const ProductsAdmin = () => {
                         InputLabelProps={{ shrink: true }}
                       />
 
+                      {/* انواع پوست */}
                       <Autocomplete
                         multiple
                         options={skinTypeOptions}
@@ -630,6 +697,7 @@ const ProductsAdmin = () => {
                         )}
                       />
 
+                      {/* وزن و واحد */}
                       <Box sx={{ display: 'flex', gap: 2 }}>
                         <TextField
                           label="وزن"
@@ -640,7 +708,6 @@ const ProductsAdmin = () => {
                           margin="normal"
                           inputProps={{ min: 0 }}
                         />
-
                         <FormControl fullWidth margin="normal">
                           <InputLabel>واحد</InputLabel>
                           <Select
@@ -657,6 +724,7 @@ const ProductsAdmin = () => {
                         </FormControl>
                       </Box>
 
+                      {/* مواد تشکیل‌دهنده */}
                       <TextField
                         name="ingredients"
                         label="مواد تشکیل‌دهنده (با کاما جدا کنید)"
@@ -672,6 +740,7 @@ const ProductsAdmin = () => {
                         rows={2}
                       />
 
+                      {/* دکمه حذف رنگ */}
                       <Box>
                         <Button
                           onClick={() => handleRemoveColor(index)}
@@ -689,19 +758,14 @@ const ProductsAdmin = () => {
               ))}
             </Box>
 
-            {/* سایر تنظیمات */}
-            <Box sx={{ gridColumn: '1 / -1', display: 'flex', gap: 2 }}>
+            {/* --- سایر تنظیمات --- */}
+            <Box sx={{ gridColumn: '1 / -1', display: 'flex', gap: 2, mt: 2, alignItems: 'center', flexWrap: 'wrap' }}>
               <FormControlLabel
                 control={
                   <Checkbox
                     name="isFeatured"
                     checked={currentProduct?.isFeatured || false}
-                    onChange={(e) => {
-                      setCurrentProduct({
-                        ...currentProduct,
-                        isFeatured: e.target.checked
-                      });
-                    }}
+                    onChange={(e) => setCurrentProduct({ ...currentProduct, isFeatured: e.target.checked })}
                   />
                 }
                 label="محصول ویژه"
@@ -712,19 +776,22 @@ const ProductsAdmin = () => {
                   <Checkbox
                     name="isNewProduct"
                     checked={currentProduct?.isNewProduct || false}
-                    onChange={(e) => {
-                      setCurrentProduct({
-                        ...currentProduct,
-                        isNewProduct: e.target.checked
-                      });
-                    }}
+                    onChange={(e) => setCurrentProduct({ ...currentProduct, isNewProduct: e.target.checked })}
                   />
                 }
                 label="محصول جدید"
               />
+
+              <ImageUploader
+                images={selectedImages}
+                onAdd={handleAddImages}
+                onRemove={handleRemoveImage}
+                onAltTextChange={handleAltTextChange}
+              />
             </Box>
           </Box>
         </DialogContent>
+
         <DialogActions>
           <Button onClick={handleCloseDialog} color="secondary">
             انصراف
@@ -735,9 +802,60 @@ const ProductsAdmin = () => {
         </DialogActions>
       </Dialog>
 
+      <Dialog open={openBrandDialog} onClose={handleCloseBrandDialog} maxWidth="sm" fullWidth>
+        <DialogTitle>ایجاد برند جدید</DialogTitle>
+        <DialogContent dividers>
+          <Box sx={{ mt: 2 }}>
+            <TextField
+              name="name"
+              label="نام برند*"
+              value={newBrand.name}
+              onChange={handleBrandInputChange}
+              fullWidth
+              margin="normal"
+            />
 
+            <TextField
+              name="description"
+              label="توضیحات"
+              value={newBrand.description}
+              onChange={handleBrandInputChange}
+              fullWidth
+              margin="normal"
+              multiline
+              rows={3}
+            />
 
-      {/* اعلان‌ها */}
+            <TextField
+              name="logo"
+              label="آدرس لوگو"
+              value={newBrand.logo}
+              onChange={handleBrandInputChange}
+              fullWidth
+              margin="normal"
+            />
+
+            <FormControlLabel
+              control={
+                <Checkbox
+                  name="isFeatured"
+                  checked={newBrand.isFeatured}
+                  onChange={(e) => setNewBrand({ ...newBrand, isFeatured: e.target.checked })}
+                />
+              }
+              label="برند ویژه"
+            />
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseBrandDialog} color="secondary">
+            انصراف
+          </Button>
+          <Button onClick={handleCreateBrand} color="primary" variant="contained">
+            ایجاد برند
+          </Button>
+        </DialogActions>
+      </Dialog>
       {/* دیالوگ ایجاد دسته‌بندی جدید */}
       <Dialog open={openCategoryDialog} onClose={handleCloseCategoryDialog} maxWidth="sm" fullWidth>
         <DialogTitle>ایجاد دسته‌بندی جدید</DialogTitle>
@@ -808,83 +926,6 @@ const ProductsAdmin = () => {
           </Button>
           <Button onClick={handleCreateCategory} color="primary" variant="contained">
             ایجاد دسته‌بندی
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity}>
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
-      {/* اعلان‌ها */}
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={6000}
-        onClose={handleCloseSnackbar}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-      >
-        <Alert onClose={handleCloseSnackbar} severity={snackbar.severity}>
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
-
-      {/* دیالوگ ایجاد برند جدید */}
-      <Dialog open={openBrandDialog} onClose={handleCloseBrandDialog} maxWidth="sm" fullWidth>
-        <DialogTitle>ایجاد برند جدید</DialogTitle>
-        <DialogContent dividers>
-          <Box sx={{ mt: 2 }}>
-            <TextField
-              name="name"
-              label="نام برند*"
-              value={newBrand.name}
-              onChange={handleBrandInputChange}
-              fullWidth
-              margin="normal"
-            />
-
-            <TextField
-              name="description"
-              label="توضیحات"
-              value={newBrand.description}
-              onChange={handleBrandInputChange}
-              fullWidth
-              margin="normal"
-              multiline
-              rows={3}
-            />
-
-            <TextField
-              name="logo"
-              label="آدرس لوگو"
-              value={newBrand.logo}
-              onChange={handleBrandInputChange}
-              fullWidth
-              margin="normal"
-            />
-
-            <FormControlLabel
-              control={
-                <Checkbox
-                  name="isFeatured"
-                  checked={newBrand.isFeatured}
-                  onChange={(e) => setNewBrand({ ...newBrand, isFeatured: e.target.checked })}
-                />
-              }
-              label="برند ویژه"
-            />
-          </Box>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseBrandDialog} color="secondary">
-            انصراف
-          </Button>
-          <Button onClick={handleCreateBrand} color="primary" variant="contained">
-            ایجاد برند
           </Button>
         </DialogActions>
       </Dialog>
