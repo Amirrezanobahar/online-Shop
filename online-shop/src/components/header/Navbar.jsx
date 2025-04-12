@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Search, ShoppingCart, User, ChevronDown, LayoutDashboard, UserCircle } from 'lucide-react';
 import { useAuth } from '../auth/logout/AuthContext'; // Changed to use AuthContext
 import './Navbar.css';
+import logo from '../../../logo/cover.png'
 
 export default function Navbar() {
   const { userRole, isLoading, logout } = useAuth(); // Using auth context

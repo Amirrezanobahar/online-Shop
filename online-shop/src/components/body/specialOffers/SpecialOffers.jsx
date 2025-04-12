@@ -2,17 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { FiClock, FiShoppingCart, FiHeart, FiChevronRight, FiChevronLeft } from 'react-icons/fi';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Autoplay } from 'swiper/modules';
+import { useNavigate } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import './SpecialOffers.css';
+import axios from 'axios';
 
 const SpecialOffers = () => {
+  const navigate = useNavigate();
   // تایمر شمارش معکوس
   const [timeLeft, setTimeLeft] = useState({
     hours: 12,
     minutes: 45,
     seconds: 30
   });
+
+  const [specialProducts, setSpecialProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -35,95 +42,52 @@ const SpecialOffers = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // لیست محصولات پیشنهادی با شناسه‌های منحصر به فرد
-  const specialProducts = [
-    {
-      id: 1,
-      name: "رژلب ماتی شماره 12",
-      price: 180000,
-      discount: 30,
-      image: "https://dkstatics-public.digikala.com/digikala-products/6164b4d47a1f7b00c5d2709b3738cd08b572eba4_1741551778.jpg?x-oss-process=image/resize,m_lfit,h_300,w_300/format,webp/quality,q_80",
-      sold: 65,
-      rating: 4.8
-    },
-    {
-      id: 2,
-      name: "پالت چشم مایع 6 رنگ",
-      price: 320000,
-      discount: 25,
-      image: "https://dkstatics-public.digikala.com/digikala-products/1ea4587f3b9fc2878e0471b9e04754108ef248fe_1738569472.jpg?x-oss-process=image/resize,m_lfit,h_300,w_300/format,webp/quality,q_80",
-      sold: 42,
-      rating: 4.9
-    },
-    {
-      id: 3,
-      name: "کرم پودر فول کاور",
-      price: 250000,
-      discount: 40,
-      image: "https://dkstatics-public.digikala.com/digikala-products/6164b4d47a1f7b00c5d2709b3738cd08b572eba4_1741551778.jpg?x-oss-process=image/resize,m_lfit,h_300,w_300/format,webp/quality,q_80",
-      sold: 78,
-      rating: 4.7
-    },
-    {
-      id: 4,
-      name: "خط چشم مایع ضد آب",
-      price: 120000,
-      discount: 20,
-      image: "https://dkstatics-public.digikala.com/digikala-products/6f7bab10c3ef2fc6c7caa9efdaf8253485ff6c25_1702583211.jpg?x-oss-process=image/resize,m_lfit,h_300,w_300/format,webp/quality,q_80",
-      sold: 53,
-      rating: 4.6
-    },
-    {
-      id: 5,
-      name: "ماسک صورت هیدراسیون",
-      price: 95000,
-      discount: 15,
-      image: "https://dkstatics-public.digikala.com/digikala-products/1148645.jpg?x-oss-process=image/resize,m_lfit,h_300,w_300/format,webp/quality,q_80",
-      sold: 120,
-      rating: 4.5
-    },
-    {
-      id: 6,
-      name: "کرم پودر فول کاور (بسته 2 عددی)",
-      price: 450000,
-      discount: 40,
-      image: "https://dkstatics-public.digikala.com/digikala-products/6164b4d47a1f7b00c5d2709b3738cd08b572eba4_1741551778.jpg?x-oss-process=image/resize,m_lfit,h_300,w_300/format,webp/quality,q_80",
-      sold: 32,
-      rating: 4.7
-    },
-    {
-      id: 7,
-      name: "خط چشم مایع ضد آب (مشکی)",
-      price: 120000,
-      discount: 20,
-      image: "https://dkstatics-public.digikala.com/digikala-products/6f7bab10c3ef2fc6c7caa9efdaf8253485ff6c25_1702583211.jpg?x-oss-process=image/resize,m_lfit,h_300,w_300/format,webp/quality,q_80",
-      sold: 47,
-      rating: 4.6
-    },
-    {
-      id: 8,
-      name: "ماسک صورت هیدراسیون (بسته 5 عددی)",
-      price: 400000,
-      discount: 15,
-      image: "https://dkstatics-public.digikala.com/digikala-products/1148645.jpg?x-oss-process=image/resize,m_lfit,h_300,w_300/format,webp/quality,q_80",
-      sold: 89,
-      rating: 4.5
-    },
-    {
-      id: 9,
-      name: "براش آرایشی 8 عددی",
-      price: 210000,
-      discount: 35,
-      image: "https://dkstatics-public.digikala.com/digikala-products/1207460.jpg?x-oss-process=image/resize,m_lfit,h_300,w_300/format,webp/quality,q_80",
-      sold: 87,
-      rating: 4.8
-    }
-  ];
+  // Fetch special offers from API
+  useEffect(() => {
+    const fetchSpecialProducts = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:5000/product');
+        setSpecialProducts(response.data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+        console.error('Error fetching special offers:', err);
+      }
+    };
+
+    fetchSpecialProducts();
+  }, []);
 
   // محاسبه قیمت بعد از تخفیف
   const calculateDiscountedPrice = (price, discount) => {
     return Math.round(price * (100 - discount) / 100);
   };
+
+  // هدایت به صفحه محصول
+  const handleProductClick = (productId) => {
+    navigate(`/products/${productId}`);
+  };
+
+  if (loading) {
+    return (
+      <div className='special-offers-container'>
+        <div className="loading-spinner">
+          در حال بارگذاری پیشنهادات ویژه...
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className='special-offers-container'>
+        <div className="error-message">
+          خطا در دریافت اطلاعات: {error}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className='special-offers-container'>
@@ -170,24 +134,43 @@ const SpecialOffers = () => {
             }}
           >
             {specialProducts.map(product => (
-              <SwiperSlide key={`product-${product.id}`}>
+              <SwiperSlide key={`product-${product._id}`}>
                 <div className="product-card">
                   <div className="product-badge">
                     <span>{product.discount}% تخفیف</span>
                   </div>
                   
-                  <div className="product-image">
-                    <img src={product.image} alt={product.name} loading="lazy" />
+                  <div className="product-image" onClick={() => handleProductClick(product._id)}>
+                    <img 
+                      src={`http://127.0.0.1:5000/public${product.images?.[0]?.url}`} 
+                      alt={product.name} 
+                      loading="lazy" 
+                    />
                     <div className="product-actions">
-                      <button className="wishlist-btn" aria-label="افزودن به علاقه‌مندی‌ها">
+                      <button 
+                        className="wishlist-btn" 
+                        aria-label="افزودن به علاقه‌مندی‌ها"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          // افزودن به لیست علاقه‌مندی‌ها
+                        }}
+                      >
                         <FiHeart />
                       </button>
-                      <button className="quick-view">نمایش سریع</button>
+                      <button 
+                        className="quick-view"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleProductClick(product._id);
+                        }}
+                      >
+                        نمایش سریع
+                      </button>
                     </div>
                   </div>
                   
                   <div className="product-info">
-                    <h3>{product.name}</h3>
+                    <h3 onClick={() => handleProductClick(product._id)}>{product.name}</h3>
                     
                     <div className="price-section">
                       <span className="original-price">
@@ -202,21 +185,28 @@ const SpecialOffers = () => {
                       <div className="rating">
                         {Array.from({ length: 5 }).map((_, i) => (
                           <span 
-                            key={`rating-${product.id}-${i}`}
-                            className={`star ${i < Math.floor(product.rating) ? 'filled' : ''}`}
+                            key={`rating-${product._id}-${i}`}
+                            className={`star ${i < Math.floor(product.rating?.average || 0) ? 'filled' : ''}`}
                             aria-hidden="true"
                           >
-                            {i < product.rating ? '★' : '☆'}
+                            {i < (product.rating?.average || 0) ? '★' : '☆'}
                           </span>
                         ))}
-                        <span className="rating-text">({product.rating})</span>
+                        <span className="rating-text">({product.rating?.average?.toFixed(1) || '۰.۰'})</span>
                       </div>
                       <div className="sold-count">
-                        فروش: {product.sold.toLocaleString()} عدد
+                        فروش: {(product.sold || 0).toLocaleString()} عدد
                       </div>
                     </div>
                     
-                    <button className="add-to-cart" aria-label={`افزودن ${product.name} به سبد خرید`}>
+                    <button 
+                      className="add-to-cart" 
+                      aria-label={`افزودن ${product.name} به سبد خرید`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // افزودن به سبد خرید
+                      }}
+                    >
                       <FiShoppingCart />
                       افزودن به سبد خرید
                     </button>
