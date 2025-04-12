@@ -20,13 +20,14 @@ const Products = () => {
       try {
         setLoading(true);
         const [productsRes, catsRes, brandsRes] = await Promise.all([
-          axios.get('http://127.0.0.1:5000/product'),
-          axios.get('http://127.0.0.1:5000/category'),
-          axios.get('http://127.0.0.1:5000/brand')
+           axios.get('http://127.0.0.1:5000/product'),
+           axios.get('http://127.0.0.1:5000/category'),
+           axios.get('http://127.0.0.1:5000/brand')
         ]);
         setProducts(productsRes.data);
         setCategories(catsRes.data);
         setBrands(brandsRes.data);
+
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -138,7 +139,7 @@ const Products = () => {
               return (
                 <div key={product._id} className="product-card">
                   <div className="product-image">
-                    <img src={`http://127.0.0.1:5000/public${product.images?.[0]?.url}`} alt={product.name} />
+                    <img src={`http://127.0.0.1:5000/public/${product.images?.[0]?.url}`} alt={product.name} />
                     {product.discount > 0 && <span className="badge discount">{product.discount}% تخفیف</span>}
                     {product.isNew && <span className="badge new">جدید</span>}
                     <button className="quick-view" onClick={() => navigate(`/products/${product._id}`)}>مشاهده سریع</button>
