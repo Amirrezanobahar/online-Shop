@@ -1,0 +1,103 @@
+.orders-container {
+  padding: 24px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+}
+
+.orders-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1f2937; /* gray-800 */
+  margin-bottom: 24px;
+}
+
+.orders-table-container {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb; /* gray-200 */
+}
+
+.orders-table {
+  width: 100%;
+  background-color: #ffffff;
+  text-align: right;
+  font-size: 14px;
+  color: #374151; /* gray-700 */
+}
+
+.orders-table th {
+  background-color: #f3f4f6; /* gray-100 */
+  color: #4b5563; /* gray-600 */
+  padding: 16px 24px;
+  white-space: nowrap;
+}
+
+.orders-table td {
+  padding: 16px 24px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.orders-table tr:hover {
+  background-color: #f9fafb; /* gray-50 */
+  transition: background-color 0.3s ease;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 8px;
+  border-radius: 9999px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-pending {
+  background-color: #fef3c7; /* yellow-100 */
+  color: #92400e; /* yellow-800 */
+}
+
+.status-shipped {
+  background-color: #dbeafe; /* blue-100 */
+  color: #1e40af; /* blue-800 */
+}
+
+.status-delivered {
+  background-color: #d1fae5; /* green-100 */
+  color: #065f46; /* green-800 */
+}
+
+.orders-action-button {
+  display: flex;
+  align-items: center;
+  padding: 4px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: white;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease;
+  margin-left: 8px;
+}
+
+.orders-action-button svg {
+  width: 16px;
+  height: 16px;
+  margin-left: 4px;
+}
+
+.orders-action-view {
+  background-color: #3b82f6; /* blue-500 */
+}
+
+.orders-action-view:hover {
+  background-color: #2563eb; /* blue-600 */
+}
+
+.orders-action-delete {
+  background-color: #ef4444; /* red-500 */
+}
+
+.orders-action-delete:hover {
+  background-color: #dc2626; /* red-600 */
+}

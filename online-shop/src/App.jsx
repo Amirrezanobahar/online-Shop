@@ -10,6 +10,9 @@ import ProtectedRoute from './components/auth/panel/ProtectedRoute';
 import AdminPanel from './components/panel/adminPanel/mainPage/AdminPanel';
 import { AuthProvider } from './components/auth/logout/AuthContext';
 import ProductsAdmin from './components/panel/adminPanel/products/ProductsAdmin'
+import AdminDashboard from './components/panel/adminPanel/dashbord/AdminDashboard';
+import UsersManagement from './components/panel/adminPanel/users/UserManagement';
+import Orders from './components/panel/adminPanel/orders/Orders';
 
 
 function App() {
@@ -27,6 +30,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/products/:id" element={<ProductDetail/>} />
         <Route path="/admin/products" element={<ProductsAdmin/>} />
+        <Route path="/admin/" element={<AdminDashboard/>} />
+        <Route path="/admin/users" element={<UsersManagement/>} />
+        <Route path="/admin/orders" element={<Orders/>} />
         <Route
           path="/admin-panel"
           element={

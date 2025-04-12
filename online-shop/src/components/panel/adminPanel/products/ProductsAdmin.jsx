@@ -426,7 +426,7 @@ const ProductsAdmin = () => {
               <TableRow key={product._id}>
                 <TableCell style={{ textAlign: 'center' }}>{product.name}</TableCell>
                 <TableCell style={{ textAlign: 'center' }}>
-                  {brands.find(b => b._id === product.brand)?.name || product.brand}
+                  {brands.find(b => b._id === product.brand)?.name || product.brand.name}
                 </TableCell>
                 <TableCell style={{ textAlign: 'center' }}>{product.price.toLocaleString('fa-IR')} تومان</TableCell>
                 <TableCell style={{ textAlign: 'center' }}>{product.stock}</TableCell>
