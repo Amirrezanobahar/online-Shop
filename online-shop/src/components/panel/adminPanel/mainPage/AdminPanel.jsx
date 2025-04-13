@@ -57,6 +57,11 @@ const AdminPanel = () => {
       key: '/admin/orders',
       icon: <BarChartOutlined />,
       label: <NavLink to="/admin/orders">سفارشات</NavLink>
+    },
+    {
+      key: '/admin/events',
+      icon: <BarChartOutlined />,
+      label: <NavLink to="/admin/events">رویداد ها</NavLink>
     }
   ];
 

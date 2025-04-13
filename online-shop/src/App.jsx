@@ -13,6 +13,7 @@ import ProductsAdmin from './components/panel/adminPanel/products/ProductsAdmin'
 import AdminDashboard from './components/panel/adminPanel/dashbord/AdminDashboard';
 import UsersManagement from './components/panel/adminPanel/users/UserManagement';
 import Orders from './components/panel/adminPanel/orders/Orders';
+import EventsManagement from './components/panel/adminPanel/events/EventsManagement ';
 
 
 function App() {
@@ -33,6 +34,7 @@ function App() {
         <Route path="/admin/" element={<AdminDashboard/>} />
         <Route path="/admin/users" element={<UsersManagement/>} />
         <Route path="/admin/orders" element={<Orders/>} />
+        <Route path="/admin/events" element={<EventsManagement/>} />
         <Route
           path="/admin-panel"
           element={
