@@ -37,26 +37,21 @@ const UserManagement = () => {
   }, []);
 
   const handleDelete = async (userId) => {
-    Modal.confirm({
-      title: 'آیا مطمئن هستید؟',
-      content: 'این عمل قابل بازگشت نیست',
-      okText: 'بله، حذف شود',
-      okType: 'danger',
-      cancelText: 'انصراف',
-      onOk: async () => {
-        setLoading(true);
-        try {
-          await axios.delete(`http://localhost:5000/user/${userId}`);
-          message.success('کاربر با موفقیت حذف شد');
-          fetchUsers();
-        } catch (error) {
-          console.error('خطا در حذف کاربر:', error);
-          message.error('خطا در حذف کاربر');
-          setLoading(false);
+
+    try {
+      await axios.delete(`http://127.0.0.1:5000/user/${userId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
-      },
-    });
-  };
+      });
+      message.success('کاربر با موفقیت حذف شد');
+      fetchUsers();
+    } catch (error) {
+      console.error('خطا در حذف کاربر:', error);
+      message.error('خطا در حذف کاربر');
+      setLoading(false);
+    }
+  }
 
   const handleEdit = (user) => {
     setEditingUser(user);
@@ -71,7 +66,11 @@ const UserManagement = () => {
     try {
       const values = await form.validateFields();
       setLoading(true);
-      await axios.put(`http://localhost:5000/user/${editingUser._id}`, values);
+      await axios.put(`http://localhost:5000/user/${editingUser._id}`, values, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
       message.success('اطلاعات کاربر با موفقیت به‌روزرسانی شد');
       setIsModalVisible(false);
       fetchUsers();
