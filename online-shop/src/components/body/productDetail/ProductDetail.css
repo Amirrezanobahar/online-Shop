@@ -1,109 +1,233 @@
-.product-detail {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 24px;
+.digikala-product-detail {
   max-width: 1200px;
-  margin: 40px auto;
+  margin: 0 auto;
   padding: 20px;
   background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.gallery {
-  flex: 1 1 40%;
-  border: 1px solid #eee;
-  border-radius: 12px;
+.product-breadcrumb {
+  margin-bottom: 20px;
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.product-gallery {
+  position: relative;
+  border: 1px solid #f0f0f0;
+  border-radius: 8px;
   overflow: hidden;
 }
 
-.gallery img {
-  width: 100%;
-  height: auto;
+.gallery-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 400px;
+  background: #f9f9f9;
+}
+
+.gallery-item img {
+  max-width: 100%;
+  max-height: 100%;
   object-fit: contain;
 }
 
-.info {
-  flex: 1 1 55%;
+.gallery-dots {
+  position: absolute;
+  bottom: 10px;
+}
+
+.share-section {
+  margin-top: 15px;
+  text-align: left;
+}
+
+.product-info {
+  padding: 0 15px;
 }
 
 .product-title {
-  font-size: 24px;
-  margin-bottom: 16px;
+  font-size: 1.8rem;
   color: #333;
+  margin-bottom: 10px;
 }
 
-.price-section {
+.product-meta {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
-}
-
-.original-price {
-  text-decoration: line-through;
-  color: #999;
-}
-
-.final-price {
-  color: #ef394e;
-  font-size: 20px;
-  font-weight: bold;
-}
-
-.discount-tag {
-  font-size: 14px;
+  flex-wrap: wrap;
+  gap: 15px;
+  margin-bottom: 15px;
+  color: #666;
+  font-size: 0.9rem;
 }
 
 .rating-section {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 20px;
 }
 
-.meta {
-  margin-bottom: 16px;
+.rating-count {
+  margin-right: 10px;
+  color: #666;
 }
 
-.tag-container {
+.custom-divider {
+  margin: 15px 0;
+}
+
+.price-section {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  align-items: center;
+  margin-bottom: 25px;
 }
 
-.features-list,
-.ingredients-list {
-  padding-left: 20px;
-  margin-bottom: 16px;
+.discount-badge {
+  background: #f44336;
+  color: white;
+  padding: 3px 8px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  margin-left: 10px;
 }
 
-.actions {
+.price-container {
   display: flex;
-  gap: 16px;
-  margin-top: 24px;
+  flex-direction: column;
 }
 
-.center-content {
+.original-price {
+  text-decoration: line-through;
+  color: #999;
+  font-size: 0.9rem;
+}
+
+.final-price {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #f44336;
+}
+
+.color-selector, 
+.size-selector, 
+.quantity-selector {
+  margin-bottom: 20px;
+}
+
+.color-selector h4,
+.size-selector h4,
+.quantity-selector h4 {
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.quantity-control {
+  display: inline-flex;
+  align-items: center;
+  margin: 0 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.quantity-control button {
+  width: 30px;
+  height: 30px;
+}
+
+.quantity-control span {
+  display: inline-block;
+  width: 40px;
+  text-align: center;
+}
+
+.stock-status {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.action-buttons {
+  margin: 30px 0;
+}
+
+.action-buttons button {
+  margin-bottom: 10px;
+}
+
+.quick-info {
+  margin-top: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+}
+
+.product-tabs {
+  margin-top: 40px;
+}
+
+.tab-content {
+  padding: 15px;
+  line-height: 1.8;
+}
+
+.specifications {
+  padding: 15px;
+}
+
+.specifications li {
+  display: flex;
+  padding: 10px 0;
+  border-bottom: 1px dashed #eee;
+}
+
+.spec-title {
+  width: 150px;
+  color: #666;
+}
+
+.spec-value {
+  flex: 1;
+}
+
+.review-card {
+  margin-bottom: 15px;
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.review-author {
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+.review-date {
+  color: #999;
+  font-size: 0.8rem;
+}
+
+.loading-container,
+.error-container,
+.not-found-container {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 70vh;
+  height: 300px;
 }
 
 @media (max-width: 768px) {
-  .product-detail {
-    flex-direction: column;
-    padding: 16px;
+  .product-title {
+    font-size: 1.5rem;
   }
-
-  .gallery,
-  .info {
-    flex: 1 1 100%;
+  
+  .gallery-item {
+    height: 300px;
   }
-
-  .actions {
-    flex-direction: column;
-    gap: 12px;
+  
+  .final-price {
+    font-size: 1.5rem;
   }
 }
