@@ -15,4 +15,11 @@
     border-radius: 8px;
     overflow: hidden;
   }
-  
+  /* در فایل UserManagement.css */
+.user-management-card .ant-table-row {
+  pointer-events: auto !important;
+}
+
+.user-management-card .ant-btn {
+  pointer-events: auto !important;
+}
