@@ -1,233 +1,130 @@
-.digikala-product-detail {
+.product-detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 2rem;
   background: #fff;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
 }
 
-.product-breadcrumb {
-  margin-bottom: 20px;
-  padding: 10px 0;
-  border-bottom: 1px solid #f0f0f0;
+.gallery-section {
+  flex: 1;
+  min-width: 300px;
 }
 
-.product-gallery {
-  position: relative;
-  border: 1px solid #f0f0f0;
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-.gallery-item {
+.carousel-image-wrapper {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 400px;
+  padding: 1rem;
   background: #f9f9f9;
+  border-radius: 12px;
 }
 
-.gallery-item img {
+.carousel-image {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
 }
 
-.gallery-dots {
-  position: absolute;
-  bottom: 10px;
-}
-
-.share-section {
-  margin-top: 15px;
-  text-align: left;
-}
-
-.product-info {
-  padding: 0 15px;
+.info-section {
+  flex: 1;
+  min-width: 300px;
 }
 
 .product-title {
   font-size: 1.8rem;
-  color: #333;
-  margin-bottom: 10px;
+  font-weight: bold;
+  margin-bottom: 1rem;
 }
 
-.product-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 15px;
-  color: #666;
-  font-size: 0.9rem;
-}
-
-.rating-section {
+.price-box {
   display: flex;
   align-items: center;
-  margin-bottom: 20px;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.price-original {
+  color: gray;
+  text-decoration: line-through;
+}
+
+.price-final {
+  color: #d32f2f;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.rating-box {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .rating-count {
-  margin-right: 10px;
-  color: #666;
-}
-
-.custom-divider {
-  margin: 15px 0;
-}
-
-.price-section {
-  display: flex;
-  align-items: center;
-  margin-bottom: 25px;
-}
-
-.discount-badge {
-  background: #f44336;
-  color: white;
-  padding: 3px 8px;
-  border-radius: 15px;
-  font-size: 0.8rem;
-  margin-left: 10px;
-}
-
-.price-container {
-  display: flex;
-  flex-direction: column;
-}
-
-.original-price {
-  text-decoration: line-through;
-  color: #999;
   font-size: 0.9rem;
+  color: gray;
 }
 
-.final-price {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: #f44336;
+.meta-box {
+  margin-bottom: 1rem;
 }
 
-.color-selector, 
-.size-selector, 
-.quantity-selector {
-  margin-bottom: 20px;
+.label {
+  color: #888;
+  font-weight: 500;
 }
 
-.color-selector h4,
-.size-selector h4,
-.quantity-selector h4 {
-  margin-bottom: 10px;
-  font-size: 1rem;
+.section {
+  margin-bottom: 1.5rem;
 }
 
-.quantity-control {
-  display: inline-flex;
-  align-items: center;
-  margin: 0 15px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-}
-
-.quantity-control button {
-  width: 30px;
-  height: 30px;
-}
-
-.quantity-control span {
-  display: inline-block;
-  width: 40px;
-  text-align: center;
-}
-
-.stock-status {
-  color: #666;
-  font-size: 0.9rem;
+.tags-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .action-buttons {
-  margin: 30px 0;
-}
-
-.action-buttons button {
-  margin-bottom: 10px;
-}
-
-.quick-info {
-  margin-top: 20px;
-  background: #f9f9f9;
-  border-radius: 8px;
-}
-
-.product-tabs {
-  margin-top: 40px;
-}
-
-.tab-content {
-  padding: 15px;
-  line-height: 1.8;
-}
-
-.specifications {
-  padding: 15px;
-}
-
-.specifications li {
   display: flex;
-  padding: 10px 0;
-  border-bottom: 1px dashed #eee;
+  gap: 1rem;
+  margin-top: 2rem;
 }
 
-.spec-title {
-  width: 150px;
-  color: #666;
-}
-
-.spec-value {
-  flex: 1;
-}
-
-.review-card {
-  margin-bottom: 15px;
-}
-
-.review-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.review-author {
-  margin: 0 10px;
-  font-weight: bold;
-}
-
-.review-date {
-  color: #999;
-  font-size: 0.8rem;
-}
-
-.loading-container,
-.error-container,
-.not-found-container {
+.loading-spinner {
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 300px;
+  padding: 5rem;
 }
 
-@media (max-width: 768px) {
-  .product-title {
-    font-size: 1.5rem;
-  }
-  
-  .gallery-item {
-    height: 300px;
-  }
-  
-  .final-price {
-    font-size: 1.5rem;
-  }
+.alert {
+  max-width: 600px;
+  margin: 3rem auto;
+}
+/* برطرف کردن ارتفاع صفر در اسلایدهای Carousel */
+.ant-carousel .slick-slide {
+  display: flex !important;
+  justify-content: center;
+  align-items: center;
+  height: 400px !important;
+}
+
+
+/* اطمینان از نمایش درست عکس */
+.carousel-image {
+  max-width: 100%;
+  max-height: 400px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
+
+/* اگر carousel روت استایل نداره، دستی اضافه کن */
+.gallery-section .ant-carousel {
+  width: 100%;
 }

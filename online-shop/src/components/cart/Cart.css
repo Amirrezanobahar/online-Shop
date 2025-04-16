@@ -1,0 +1,42 @@
+.digikala-product-form {
+  max-width: 600px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  direction: rtl;
+  font-family: IRANSans, sans-serif;
+}
+
+.digikala-product-form h2 {
+  font-size: 1.6rem;
+  color: #333;
+  margin-bottom: 24px;
+  text-align: center;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 12px;
+}
+
+.form-container .ant-form-item-label > label {
+  color: #444;
+  font-weight: 500;
+}
+
+.uploaded-image {
+  width: 100px;
+  height: auto;
+  margin-top: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.ant-btn-primary {
+  background-color: #ef394e;
+  border-color: #ef394e;
+}
+
+.ant-btn-primary:hover {
+  background-color: #d72b3f;
+  border-color: #d72b3f;
+}
