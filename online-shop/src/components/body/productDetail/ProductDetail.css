@@ -107,3 +107,25 @@
     gap: 12px;
   }
 }
+
+.custom-cart-modal .ant-modal-content {
+  border-radius: 16px;
+  padding: 32px 24px;
+  text-align: center;
+}
+
+.cart-success-modal-content h2 {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.cart-success-modal-content p {
+  margin-bottom: 8px;
+  font-size: 16px;
+}
+
+.custom-cart-modal .ant-btn {
+  height: 40px;
+  font-size: 15px;
+  border-radius: 8px;
+}
