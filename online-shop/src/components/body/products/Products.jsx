@@ -65,13 +65,21 @@ const Products = () => {
 
       setAddingToCart(product._id);
       const token = localStorage.getItem('token');
-      
+
       if (!token) {
         navigate('/login');
         return;
       }
 
-      // Prepare complete payload
+      console.log({
+        productId: product._id,
+        name: product.name,
+        price: product.price,
+        quantity: 1,
+        image: product.images?.[0]?.url || '/default-product.jpg',
+        discount: product.discount || 0,});
+      
+      // Prepare complete payload with image
       const payload = {
         productId: product._id,
         name: product.name,
@@ -79,15 +87,13 @@ const Products = () => {
         quantity: 1,
         image: product.images?.[0]?.url || '/default-product.jpg',
         discount: product.discount || 0,
-        stock: product.stock || 0,
         // Only include variants if they exist
         ...(product.colors?.length > 0 && { color: product.colors[0] }),
         ...(product.sizes?.length > 0 && { size: product.sizes[0] })
       };
 
-      console.log('Sending to backend:', payload);
-
       try {
+        // First try to add to cart
         const response = await axios.post(
           'http://127.0.0.1:5000/cart/addToCart',
           payload,
@@ -98,10 +104,8 @@ const Products = () => {
             }
           }
         );
-        
-        // Update local cart state
-        setCart(prev => [...prev, response.data.cartItem]);
-        showNotification(response.data.message, 'success');
+
+        showNotification(response.data.message || 'محصول به سبد خرید اضافه شد', 'success');
       } catch (error) {
         if (error.response?.status === 404) {
           // Cart doesn't exist - create it first
@@ -110,7 +114,7 @@ const Products = () => {
             {},
             { headers: { 'Authorization': `Bearer ${token}` } }
           );
-          
+
           // Retry adding to cart
           const retryResponse = await axios.post(
             'http://127.0.0.1:5000/cart/addToCart',
@@ -122,20 +126,19 @@ const Products = () => {
               }
             }
           );
-          setCart(prev => [...prev, retryResponse.data.cartItem]);
-          showNotification(retryResponse.data.message, 'success');
+          showNotification(retryResponse.data.message || 'محصول به سبد خرید اضافه شد', 'success');
         } else {
           throw error;
         }
       }
     } catch (error) {
-      console.error('Cart Error:', {
+      console.error('Add to cart error:', {
         error: error.message,
         response: error.response?.data
       });
       showNotification(
-        error.response?.data?.message || 
-        'خطا در انجام عملیات',
+        error.response?.data?.message ||
+        'خطا در اضافه کردن به سبد خرید',
         'error'
       );
     } finally {
