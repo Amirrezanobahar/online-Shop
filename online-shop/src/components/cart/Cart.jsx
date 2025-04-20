@@ -14,7 +14,7 @@ const Cart = () => {
   const [couponMessage, setCouponMessage] = useState('');
   const [couponError, setCouponError] = useState(false);
 
-  // Fetch cart data
+  // دریافت اطلاعات سبد خرید
   useEffect(() => {
     const fetchCart = async () => {
       try {
@@ -33,7 +33,7 @@ const Cart = () => {
         setLoading(false);
       } catch (err) {
         if (err.response?.status === 404) {
-          // Cart doesn't exist, create empty cart
+          // اگر سبد خرید وجود نداشت
           setCart({ items: [], totalPrice: 0, totalItems: 0 });
         } else {
           setError(err.message);
@@ -45,6 +45,7 @@ const Cart = () => {
     fetchCart();
   }, [navigate]);
 
+  // تغییر تعداد محصول
   const updateQuantity = async (itemId, newQuantity) => {
     if (newQuantity < 1) return;
 
@@ -59,12 +60,13 @@ const Cart = () => {
           }
         }
       );
-      setCart(response.data);
+      setCart(response.data.cart);
     } catch (err) {
-      console.error('Error updating quantity:', err);
+      console.error('خطا در تغییر تعداد:', err);
     }
   };
 
+  // حذف محصول از سبد خرید
   const removeItem = async (itemId) => {
     try {
       const token = localStorage.getItem('token');
@@ -76,12 +78,13 @@ const Cart = () => {
           }
         }
       );
-      setCart(response.data);
+      setCart(response.data.cart);
     } catch (err) {
-      console.error('Error removing item:', err);
+      console.error('خطا در حذف محصول:', err);
     }
   };
 
+  // اعمال کد تخفیف
   const applyCoupon = async () => {
     if (!coupon.trim()) return;
 
@@ -111,6 +114,7 @@ const Cart = () => {
     }
   };
 
+  // محاسبه جمع کل
   const calculateTotal = () => {
     if (!cart) return { subtotal: 0, discountedTotal: 0, discountAmount: 0 };
     
@@ -128,6 +132,7 @@ const Cart = () => {
     };
   };
 
+  // رفتن به صفحه پرداخت
   const proceedToCheckout = () => {
     navigate('/checkout');
   };
