@@ -14,7 +14,7 @@ import {
   Modal,
   Badge
 } from 'antd';
-import {   ShoppingCartOutlined, HeartOutlined, InfoCircleOutlined, CheckCircleTwoTone  } from '@ant-design/icons';
+import { ShoppingCartOutlined, HeartOutlined, InfoCircleOutlined, CheckCircleTwoTone } from '@ant-design/icons';
 import './ProductDetail.css';
 
 
@@ -39,7 +39,7 @@ const ProductDetail = () => {
       try {
         // Fetch product data
         const { data } = await axios.get(`http://127.0.0.1:5000/product/${id}`);
-        
+
         if (!data) throw new Error('محصول یافت نشد');
         setProduct(data);
 
@@ -66,16 +66,16 @@ const ProductDetail = () => {
   }, [id]);
   const addToCart = async () => {
     if (!product) return;
-  
+
     try {
       setCartLoading(true);
       const token = localStorage.getItem('token');
-  
+
       if (!token) {
         navigate('/login');
         return;
       }
-  
+
       const payload = {
         productId: product._id,
         name: product.name,
@@ -86,7 +86,7 @@ const ProductDetail = () => {
         ...(selectedColor && { color: selectedColor }),
         ...(selectedSize && { size: selectedSize }),
       };
-  
+
       try {
         const response = await axios.post(
           'http://127.0.0.1:5000/cart/addToCart',
@@ -107,7 +107,7 @@ const ProductDetail = () => {
             {},
             { headers: { Authorization: `Bearer ${token}` } }
           );
-  
+
           const retryResponse = await axios.post(
             'http://127.0.0.1:5000/cart/addToCart',
             payload,
@@ -193,9 +193,9 @@ const ProductDetail = () => {
   return (
     <div className="product-detail">
       {/* Server Info Button */}
-      <Button 
-        type="text" 
-        icon={<InfoCircleOutlined />} 
+      <Button
+        type="text"
+        icon={<InfoCircleOutlined />}
         onClick={() => setShowServerInfo(true)}
         style={{ position: 'absolute', top: 20, right: 20, zIndex: 100 }}
       />
@@ -379,7 +379,7 @@ const ProductDetail = () => {
                     <span>{serverInfo?.version || 'N/A'}</span>
                   </div>
                 </div>
-                
+
                 <div style={{ display: 'flex', marginBottom: '12px' }}>
                   <div style={{ flex: 1 }}>
                     <Tag color="cyan" style={{ width: '120px', textAlign: 'center' }}>وضعیت</Tag>
@@ -392,9 +392,9 @@ const ProductDetail = () => {
                     <span>{serverInfo?.responseTime || 'N/A'} ms</span>
                   </div>
                 </div>
-                
+
                 <Divider style={{ margin: '12px 0' }} />
-                
+
                 <div style={{ display: 'flex' }}>
                   <div style={{ flex: 1 }}>
                     <Tag color="orange" style={{ width: '120px', textAlign: 'center' }}>آخرین بروزرسانی</Tag>
@@ -410,34 +410,34 @@ const ProductDetail = () => {
         )}
       </Modal>
       <Modal
-  open={cartSuccessModalVisible}
-  onCancel={() => setCartSuccessModalVisible(false)}
-  footer={null}
-  centered
-  width={500}
-  className="custom-cart-modal"
->
-  <div className="cart-success-modal-content">
-    <CheckCircleTwoTone twoToneColor="#52c41a" style={{ fontSize: 48 }} />
-    <h2 style={{ margin: '16px 0 8px' }}>محصول به سبد خرید اضافه شد</h2>
-    <p style={{ color: '#555' }}>{product.name}</p>
+        open={cartSuccessModalVisible}
+        onCancel={() => setCartSuccessModalVisible(false)}
+        footer={null}
+        centered
+        width={500}
+        className="custom-cart-modal"
+      >
+        <div className="cart-success-modal-content">
+          <CheckCircleTwoTone twoToneColor="#52c41a" style={{ fontSize: 48 }} />
+          <h2 style={{ margin: '16px 0 8px' }}>محصول به سبد خرید اضافه شد</h2>
+          <p style={{ color: '#555' }}>{product.name}</p>
 
-    <img
-      src={`http://127.0.0.1:5000/public${product.images?.[0]?.url}`}
-      alt={product.name}
-      style={{ width: 120, height: 120, objectFit: 'contain', margin: '16px auto' }}
-    />
+          <img
+            src={`http://127.0.0.1:5000/public${product.images?.[0]?.url}`}
+            alt={product.name}
+            style={{ width: 120, height: 120, objectFit: 'contain', margin: '16px auto' }}
+          />
 
-    <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 24 }}>
-      <Button type="primary" onClick={() => navigate('/cart')} style={{ width: '48%' }}>
-        مشاهده سبد خرید
-      </Button>
-      <Button onClick={() => setCartSuccessModalVisible(false)} style={{ width: '48%' }}>
-        ادامه خرید
-      </Button>
-    </div>
-  </div>
-</Modal>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 24 }}>
+            <Button type="primary" onClick={() => navigate('/cart')} style={{ width: '48%' }}>
+              مشاهده سبد خرید
+            </Button>
+            <Button onClick={() => setCartSuccessModalVisible(false)} style={{ width: '48%' }}>
+              ادامه خرید
+            </Button>
+          </div>
+        </div>
+      </Modal>
 
     </div>
   );

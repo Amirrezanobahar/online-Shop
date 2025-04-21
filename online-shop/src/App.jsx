@@ -15,6 +15,7 @@ import UsersManagement from './components/panel/adminPanel/users/UserManagement'
 import Orders from './components/panel/adminPanel/orders/Orders';
 import EventsManagement from './components/panel/adminPanel/events/EventsManagement ';
 import Cart from './components/cart/Cart';
+import SearchPage from './components/search/Search'
 
 
 function App() {
@@ -37,6 +38,7 @@ function App() {
         <Route path="/admin/orders" element={<Orders/>} />
         <Route path="/admin/events" element={<EventsManagement/>} />
         <Route path="/cart" element={<Cart/>} />
+        <Route path="/search" element={<SearchPage/>} />
         <Route
           path="/admin-panel"
           element={
